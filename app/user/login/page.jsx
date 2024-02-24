@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import HashLoader from "react-spinners/HashLoader";
 import { useCookies } from 'react-cookie';
+import { useEffect,useState } from 'react';
 
 const validationSchema = Yup.object({
   username: Yup.string().required('Username is required'),
@@ -17,6 +18,12 @@ export default function Login() {
 
   const router = useRouter()
   const [cookies, setCookie] = useCookies("");
+
+  useEffect(()=>{
+    if(cookies.username){
+      router.push('/user/profile')
+    }
+  },[])
 
   const handleLogin = async (values, { setSubmitting }) => {
       console.log(values)
