@@ -2,12 +2,34 @@
 import {Formik, Form, Field} from 'formik'
 import axios from 'axios'
 import { useEffect,useState } from 'react';
+import { useRouter } from 'next/navigation'
+import { useCookies } from "react-cookie";
+import HashLoader from "react-spinners/HashLoader";
 
 export default function Home() {
 
+  const router = useRouter();
   const [data, setData] = useState("");
+  const cookies = useCookies("");
+
+  useEffect(()=>{
+    if(!cookies[0].username){
+      router.push('/user/login')
+    }
+     axios.post("/api/getUser/", {username: cookies[0].username})
+    .then((res)=>{
+      setData(res.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+},[]);
+if (!data) {
+  // Render loading state or return null
+  return <div className='flex justify-center items-center h-screen'><HashLoader color={"#8c97f9"} loading={true} size={50} speedMultiplier={2}/></div>;
+}
+
   const handleData = async (values) => {
-    console.log(values)
     try{
       const res = await axios.post("/api/prediction", values)
       console.log(res.data)
@@ -22,7 +44,7 @@ export default function Home() {
     }
 
   return (
-    <div className='flex justify-center items-center h-screen bg-blue-400'>
+    <div className='flex justify-center items-center h-screen bg-indigo-100'>
         <div className='w-96 p-6 shadow-lg rounded-md bg-blue-200'>
         <h1 className='flex justify-center items-center font-semibold text-lg'>Enter Details</h1>
         <Formik
@@ -42,23 +64,23 @@ export default function Home() {
           >
             {({ errors, touched })=>(
           <Form>
-            <label htmlfor="Gender" className="block text-sm font-medium text-gray-700">Gender</label>
-            <Field type="text" name="Gender" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="Age" className="block text-sm font-medium text-gray-700">Age</label>
-            <Field type="number" name="Age" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="Height" className="block text-sm font-medium text-gray-700">Height</label>
-            <Field type="number" name="Height" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="Weight" className="block text-sm font-medium text-gray-700">Weight</label>
-            <Field type="number" name="Weight" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="Duration" className="block text-sm font-medium text-gray-700">Duration</label>
-            <Field type="number" name="Duration" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="HeartRate" className="block text-sm font-medium text-gray-700">Heart Rate</label>
-            <Field type="number" name="HeartRate" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-            <label htmlfor="Temperature" className="block text-sm font-medium text-gray-700">Temperature</label>
-            <Field type="number" name="Temperature" className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+            <label htmlfor="Gender" className="lg:text-base sm:block text-sm mb-2">Gender</label>
+            <Field type="text" name="Gender" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="Age" className="lg:text-base sm:block text-sm mb-2">Age</label>
+            <Field type="number" name="Age" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="Height" className="lg:text-base sm:block text-sm mb-2">Height</label>
+            <Field type="number" name="Height" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="Weight" className="lg:text-base sm:block text-sm mb-2">Weight</label>
+            <Field type="number" name="Weight" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="Duration" className="lg:text-base sm:block text-sm mb-2">Duration</label>
+            <Field type="number" name="Duration" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="HeartRate" className="lg:text-base sm:block text-sm mb-2">Heart Rate</label>
+            <Field type="number" name="HeartRate" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
+            <label htmlfor="Temperature" className="lg:text-base sm:block text-sm mb-2">Temperature</label>
+            <Field type="number" name="Temperature" className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
             <button type="submit" className="mt-4 w-full bg-indigo-500 text-white p-3 rounded-md">Submit</button>
-            <label htmlfor="result" className="block text-sm font-medium text-gray-700">Result</label>
-            <Field type="number" name="result" value={data} className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+            <label htmlfor="result" className="lg:text-base sm:block text-sm mb-2">Result</label>
+            <Field type="number" name="result" value={data} className="lg:text-base sm:border w-full text-xs px-2 py-1 focus:outline none focus:ring-0 focus:border-indigo-400 rounded-md" />
           </Form>
             )}
         </Formik>

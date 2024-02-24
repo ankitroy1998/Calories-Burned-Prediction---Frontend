@@ -71,7 +71,7 @@ export default function Login() {
           </div>
           {/* Add React HashLoader after login button click in form*/}
           <div className='mt-3 flex justify-center items-center'>
-            {isSubmitting && <HashLoader color={"#F87171"} loading={true} size={50} speedMultiplier={2}/>}
+            {isSubmitting && <HashLoader color={"#8c97f9"} loading={true} size={50} speedMultiplier={2}/>}
           </div>
           </Form>
             )}
